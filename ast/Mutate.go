@@ -1,5 +1,13 @@
 package ast
 
+import "math/rand"
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz")
+
+func hit(max int32) bool {
+	return rand.Int31n(max) == 1
+}
+
 func (this *VariableNode) Mutate() Node {
 	if hit(100) {
 		copy := &VariableNode{Variable: this.Variable}

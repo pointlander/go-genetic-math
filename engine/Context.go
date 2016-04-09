@@ -7,9 +7,6 @@ type Context struct {
 	variables map[string]float64
 }
 
-var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz")
-
-
 func NewContext() *Context {
 	return &Context{
 		variables: map[string]float64{},

@@ -1,4 +1,5 @@
 package ast
+
 import "github.com/rogeralsing/GoMath/engine"
 
 func (node *AddNode) Eval(context *engine.Context) float64 {

@@ -1,14 +1,6 @@
 package ast
 
 import "github.com/rogeralsing/GoMath/engine"
-import "math/rand"
-
-var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz")
-
-func hit(max int32) bool {
-	return rand.Int31n(max) == 1
-}
-
 
 type Node interface {
 	Eval(context *engine.Context) float64

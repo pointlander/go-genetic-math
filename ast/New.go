@@ -1,6 +1,5 @@
 package ast
 
-
 //Add adds the evaluated result of two nodes
 func Add(left Node, right Node) Node {
 	return &AddNode{Left: left, Right: right}
