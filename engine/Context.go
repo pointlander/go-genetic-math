@@ -1,5 +1,10 @@
 package engine
 
+import (
+	"bytes"
+	"fmt"
+)
+
 type Context struct {
 	variables map[string]float64
 }
@@ -32,11 +37,11 @@ type CaseValue struct {
 	Result float64
 }
 
-func Case (result float64, inputs ...InputValue) CaseValue  {
-    return CaseValue {
-        Result: result,
-        Inputs: inputs,
-        }
+func Case(result float64, inputs ...InputValue) CaseValue {
+	return CaseValue{
+		Result: result,
+		Inputs: inputs,
+	}
 }
 
 type CasesValue struct {
@@ -44,5 +49,16 @@ type CasesValue struct {
 }
 
 func Cases(cases ...CaseValue) CasesValue {
-    return CasesValue { Cases: cases}
+	return CasesValue{Cases: cases}
+}
+
+func (cases CasesValue) String() string {
+	var buffer bytes.Buffer
+	for x, c := range cases.Cases {
+		buffer.WriteString(fmt.Sprintf("Case %v = %v \n", x, c.Result))
+		for _, i := range c.Inputs {
+			buffer.WriteString(fmt.Sprintf("\tVar %s = %v \n", i.Variable, i.Value))
+		}
+	}
+	return fmt.Sprint(buffer.String())
 }
