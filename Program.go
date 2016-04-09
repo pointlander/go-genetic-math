@@ -8,10 +8,10 @@ import (
 
 func main() {
     cases := engine.Cases(engine.Case(20, engine.Input("x",10),engine.Input("y",0)))
+    
     for x,c := range cases.Cases {
-        fmt.Printf("Case %v", x)
-        println()
-        println(c.Result)
+        fmt.Printf("Case %v = %v", x,c.Result)
+        println()        
         for _,i := range c.Inputs {
             fmt.Printf("Var %s = %v",i.Variable,i.Value)
             println()
