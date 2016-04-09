@@ -20,3 +20,7 @@ func Literal(value float64) Node {
 func Sub(left Node, right Node) Node {
 	return &SubNode{Left: left, Right: right}
 }
+
+func Var(name string) Node {
+    return &VariableNode{Variable: name}
+}
