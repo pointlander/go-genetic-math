@@ -1,8 +1,14 @@
 package engine
 
+import (
+)
+
 type Context struct {
 	variables map[string]float64
 }
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz")
+
 
 func NewContext() *Context {
 	return &Context{
@@ -10,10 +16,10 @@ func NewContext() *Context {
 	}
 }
 
-func (this *Context) GetVariable(variable string) float64 {
-	return this.variables[variable]
+func (node *Context) GetVariable(variable string) float64 {
+	return node.variables[variable]
 }
 
-func (this *Context) SetVariable(variable string, value float64) {
-    this.variables[variable] = value
+func (node *Context) SetVariable(variable string, value float64) {
+	node.variables[variable] = value
 }
