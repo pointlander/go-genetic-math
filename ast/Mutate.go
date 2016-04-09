@@ -3,9 +3,9 @@ package ast
 import "math/rand"
 
 const (
-	rate1 = 50.0
-	rate2 = 100.0
-	rate3 = 250.0
+	rate1 = 50
+	rate2 = 100
+	rate3 = 250
 )
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz")
