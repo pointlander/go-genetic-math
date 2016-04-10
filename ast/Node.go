@@ -12,6 +12,9 @@ type LiteralNode struct {
 	Value float64
 }
 
+
+
+
 type AddNode struct {
 	Left  Node
 	Right Node
