@@ -11,13 +11,13 @@ const (
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz")
 
 var creators = []func() Node{
-		randomLiteralNode,
-		randomAddNode,
-		randomSubNode,
-		randomMulNode,
-		randomDivNode,
-		randomVariableNode,
-	}
+	randomLiteralNode,
+	randomAddNode,
+	randomSubNode,
+	randomMulNode,
+	randomDivNode,
+	randomVariableNode,
+}
 
 func hit(max int32) bool {
 	return rand.Int31n(max) == 1

@@ -12,22 +12,6 @@ type LiteralNode struct {
 	Value float64
 }
 
-type BinaryOp int
-
-const (
-    AddOp BinaryOp = iota
-    SubOp
-    MulOp
-    DivOp
-)
-
-type BinaryNode struct {
-	Left  Node
-	Right Node
-    Operator BinaryOp
-}
-
-
 type AddNode struct {
 	Left  Node
 	Right Node

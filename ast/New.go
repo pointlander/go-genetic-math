@@ -22,5 +22,5 @@ func Sub(left Node, right Node) Node {
 }
 
 func Var(name string) Node {
-    return &VariableNode{Variable: name}
+	return &VariableNode{Variable: name}
 }
