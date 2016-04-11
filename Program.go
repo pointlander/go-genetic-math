@@ -15,6 +15,6 @@ func main() {
 	context := engine.NewContext()
 	context.SetVariable("x", 10)
 	add := ast.Add(ast.Mul(ast.Literal(10.111), ast.Literal(20)), ast.Literal(20))
-    add = add.Mutate()
+	add = add.Mutate()
 	fmt.Printf("%v", add)
 }
