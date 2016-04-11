@@ -11,6 +11,8 @@ func main() {
 	cases := engine.Cases(engine.Case(10, engine.Input("x", 5), engine.Input("y", 2)),
 		engine.Case(20, engine.Input("x", 10), engine.Input("y", 2)),
 		engine.Case(30, engine.Input("x", 10), engine.Input("y", 3)))
+        
+    
 
 	fmt.Printf("%+v", cases)
 
@@ -18,6 +20,8 @@ func main() {
 
 	context := engine.NewContext()
 	context.SetVariable("x", 10)
+    
+    fitness := cases.Eval(add)
 
 	add = add.Mutate()
 	fmt.Printf("%v", add)
