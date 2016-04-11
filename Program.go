@@ -5,14 +5,14 @@ import (
 
 	"github.com/rogeralsing/GoMath/ast"
 	"github.com/rogeralsing/GoMath/engine"
+	"github.com/rogeralsing/GoMath/world"
 )
 
 func main() {
-	cases := engine.Cases(engine.Case(10, engine.Input("x", 5), engine.Input("y", 2)),
-		engine.Case(20, engine.Input("x", 10), engine.Input("y", 2)),
-		engine.Case(30, engine.Input("x", 10), engine.Input("y", 3)))
-        
-    
+	cases := world.Cases(world.Case(10, world.Input("x", 5), world.Input("y", 2)),
+		world.Case(20, world.Input("x", 10), world.Input("y", 2)),
+		world.Case(30, world.Input("x", 10), world.Input("y", 3)),
+        world.Case(3000, world.Input("x", 1000), world.Input("y", 3)))
 
 	fmt.Printf("%+v", cases)
 
@@ -20,9 +20,18 @@ func main() {
 
 	context := engine.NewContext()
 	context.SetVariable("x", 10)
-    
-    fitness := cases.Eval(add)
 
-	add = add.Mutate()
-	fmt.Printf("%v", add)
+	parent := add
+	parentFitness := cases.Eval(parent)
+	for {
+		child := parent.Mutate()
+		childFitness := cases.Eval(child)
+		if childFitness < parentFitness {
+			parent = child
+			parentFitness = childFitness
+
+			fmt.Printf("%v\t%v", parent, parentFitness)
+            println()
+		}
+	}
 }

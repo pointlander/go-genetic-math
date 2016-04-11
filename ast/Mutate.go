@@ -8,7 +8,7 @@ const (
 	rate3 = 250
 )
 
-var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz")
+var letterRunes = []rune("xyz")
 
 var creators = []func() Node{
 	randomLiteralNode,

@@ -3,7 +3,8 @@ package world
 import (
 	"bytes"
 	"fmt"
-    "github.com/rogeralsing/GoMath/ast"
+    "math"
+	"github.com/rogeralsing/GoMath/ast"
 	"github.com/rogeralsing/GoMath/engine"
 )
 
@@ -48,16 +49,16 @@ func (cases CasesValue) String() string {
 }
 
 func (cases CasesValue) Eval(node ast.Node) float64 {
-    context := engine.NewContext()
-    total := 0.0
-    for _,c := range cases.Cases {
-        for _, i := range c.Inputs {
-            context.SetVariable(i.Variable,i.Value)
-        }
-        res := node.Eval(context)
-        diff := c.Result - res
-        total += diff
-    } 
-    
-    return total
+	context := engine.NewContext()
+	total := 0.0
+	for _, c := range cases.Cases {
+		for _, i := range c.Inputs {
+			context.SetVariable(i.Variable, i.Value)
+		}
+		res := node.Eval(context)
+		diff := math.Abs(c.Result - res)
+		total += diff
+	}
+
+	return total
 }
