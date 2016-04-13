@@ -3,9 +3,9 @@ package ast
 import "math/rand"
 
 const (
-	rate1 = 50
-	rate2 = 100
-	rate3 = 250
+	rate1 = 150
+	rate2 = 200
+	rate3 = 350
 )
 
 var letterRunes = []rune("xyz")
@@ -90,7 +90,8 @@ func mutateAny(node Node) Node {
 //Mutate the given node
 func (node *VariableNode) Mutate() Node {
 	if hit(rate2) {
-		return Var(string(letterRunes[rand.Intn(len(letterRunes))]))
+        variable := string(letterRunes[rand.Intn(len(letterRunes))])
+		return Var(variable)
 	}
 	return mutateAny(node)
 }
@@ -99,15 +100,15 @@ func (node *VariableNode) Mutate() Node {
 func (node *LiteralNode) Mutate() Node {
 	//mutate by offset
 	if hit(rate1) {
-		copy := &LiteralNode{Value: node.Value}
-		copy.Value = node.Value - rand.NormFloat64()*10
-		return copy
+		return Literal(node.Value - rand.NormFloat64()*10)	
 	} 
     if hit(rate1) {
 		//hard mutation
-		copy := &LiteralNode{Value: node.Value}
-		copy.Value = rand.Float64()
-		return copy
+		return Literal(rand.Float64())
+	}
+    if hit(rate1) {
+		//hard mutation to integer
+		return Literal(float64(int(node.Value)))
 	}
 	return mutateAny(node)
 }
@@ -115,7 +116,7 @@ func (node *LiteralNode) Mutate() Node {
 //Mutate the given node
 func (node *BinaryNode) Mutate() Node {
 	if hit(rate1) {
-		return Add(node.Left.Mutate(), node.Right.Mutate())
+		return &BinaryNode { Left: node.Left.Mutate(), Right: node.Right.Mutate(), Operator: node.Operator}
 	}
     if hit(rate1) {
         return randomRemove(node)

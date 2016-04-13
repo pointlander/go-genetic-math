@@ -8,11 +8,11 @@ func (node *BinaryNode) String() string {
 	case OpAdd == node.Operator:
 		return fmt.Sprintf("(%v+%v)", node.Left, node.Right)
 	case OpSub == node.Operator:
-		return fmt.Sprintf("(%v+%v)", node.Left, node.Right)
+		return fmt.Sprintf("(%v-%v)", node.Left, node.Right)
 	case OpMul == node.Operator:
-		return fmt.Sprintf("(%v+%v)", node.Left, node.Right)
+		return fmt.Sprintf("(%v*%v)", node.Left, node.Right)
 	case OpDiv == node.Operator:
-		return fmt.Sprintf("(%v+%v)", node.Left, node.Right)
+		return fmt.Sprintf("(%v/%v)", node.Left, node.Right)
 	default:
 		return "unknown"
 	}
