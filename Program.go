@@ -15,7 +15,7 @@ func main() {
 
 	fmt.Printf("%+v", cases)	
 
-	parent := ast.Mul(ast.Var("x"),ast.Var("y"))
+	parent := ast.Mul(ast.Var("x"),ast.Var("z"))
 	parentFitness := cases.Eval(parent)
     fmt.Printf("%v\t%v", parent, parentFitness)
     

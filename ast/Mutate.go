@@ -106,11 +106,17 @@ func (node *LiteralNode) Mutate() Node {
 
 //Mutate the given node
 func (node *BinaryNode) Mutate() Node {
+    //remove left or right
     if hit(rate1) {
 		return randomRemove(node)
 	}
+    //mutate children
 	if hit(rate1) {
 		return &BinaryNode{Left: node.Left.Mutate(), Right: node.Right.Mutate(), Operator: node.Operator}
+	}
+    //mutate operator
+    if hit(rate1) {
+		return &BinaryNode{Left: node.Left, Right: node.Right, Operator: randomOperator()}
 	}
 
 	return mutateAny(node)
