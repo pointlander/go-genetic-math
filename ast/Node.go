@@ -2,6 +2,7 @@ package ast
 
 import "github.com/rogeralsing/GoMath/engine"
 
+//Node represents an abstract AST node and the behaviors available on it
 type Node interface {
 	Eval(context *engine.Context) float64
 	String() string
@@ -10,58 +11,19 @@ type Node interface {
 	Optimize() Node
 }
 
+//LiteralNode represents a literal value, e.g. 123.456
 type LiteralNode struct {
 	Value float64
 }
 
-type BinaryOp int
-
-const (
-	OpAdd BinaryOp = iota
-	OpSub
-	OpDiv
-	OpMul
-)
-
-var operatorSymbols = [...]string{
-	"+",
-	"-",
-	"/",
-	"*",
-}
-
-var operatorLogic = [...]func(Node, Node, *engine.Context) float64{
-	func(left Node, right Node, context *engine.Context) float64 {
-		return left.Eval(context) + right.Eval(context)
-	},
-	func(left Node, right Node, context *engine.Context) float64 {
-		return left.Eval(context) - right.Eval(context)
-	},
-	func(left Node, right Node, context *engine.Context) float64 {
-		return left.Eval(context) / right.Eval(context)
-	},
-	func(left Node, right Node, context *engine.Context) float64 {
-		return left.Eval(context) * right.Eval(context)
-	},
-}
-
-func (op BinaryOp) Apply(left Node, right Node, context *engine.Context) float64 {
-	logic := operatorLogic[op]
-	res := logic(left, right, context)
-	return res
-}
-
-func (op BinaryOp) String() string {
-	return operatorSymbols[op]
-}
-
+//BinaryNode represents a binary operation, e.g. a + b
 type BinaryNode struct {
 	Left     Node
 	Right    Node
 	Operator BinaryOp
 }
 
-//VariableNode represents a variable
+//VariableNode represents a variable, e.g. X
 type VariableNode struct {
 	Variable string
 }

@@ -80,7 +80,7 @@ func (cases CasesValue) Solve() ast.Node {
 			println()
 			println()
 			if parentFitness == 0 {
-				return parent
+				return parent.Optimize()
 			}
 		}
 	}
