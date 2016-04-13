@@ -6,6 +6,7 @@ type Node interface {
 	Eval(context *engine.Context) float64
 	String() string
 	Mutate() Node
+    IsConstant() bool
 }
 
 type LiteralNode struct {
