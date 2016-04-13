@@ -4,6 +4,15 @@ import (
 	"github.com/rogeralsing/GoMath/engine"
 )
 
+func isConstantZero(node Node) bool {
+	if !node.IsConstant() {
+        return false
+    }
+    
+	value := node.Eval(engine.NewContext())
+	return value == 0
+}
+
 func (node *BinaryNode) IsConstant() bool {
 
 	left := node.Left
@@ -11,22 +20,12 @@ func (node *BinaryNode) IsConstant() bool {
 
 	//if this is a mul node and one of the operands are 0, then this is constant
 	if node.Operator == OpMul {
-		if left.IsConstant() {
-			context := engine.NewContext()
-			leftValue := left.Eval(context)
-
-			if leftValue == 0 {
-				return true
-			}
+		if isConstantZero(left) {
+			return true
 		}
 
-		if right.IsConstant() {
-			context := engine.NewContext()
-			rightValue := right.Eval(context)
-
-			if rightValue == 0 {
-				return true
-			}
+		if isConstantZero(right) {
+			return true
 		}
 	}
 
@@ -55,43 +54,23 @@ func (node *BinaryNode) Optimize() Node {
 
 	//remove any + or - of constant 0
 	if node.Operator == OpAdd || node.Operator == OpSub {
-		if left.IsConstant() {
-			context := engine.NewContext()
-			leftValue := left.Eval(context)
-
-			if leftValue == 0 {
-				return right
-			}
+		if isConstantZero(left) {
+			return right
 		}
 
-		if right.IsConstant() {
-			context := engine.NewContext()
-			rightValue := right.Eval(context)
-
-			if rightValue == 0 {
-				return left
-			}
+		if isConstantZero(right) {
+			return left
 		}
 	}
 
 	//return literal 0 for any multiplication with or by 0
 	if node.Operator == OpMul {
-		if left.IsConstant() {
-			context := engine.NewContext()
-			leftValue := left.Eval(context)
-
-			if leftValue == 0 {
-				return Literal(0)
-			}
+		if isConstantZero(left) {
+			return Literal(0)
 		}
 
-		if right.IsConstant() {
-			context := engine.NewContext()
-			rightValue := right.Eval(context)
-
-			if rightValue == 0 {
-				return Literal(0)
-			}
+		if isConstantZero(right) {
+			return Literal(0)
 		}
 	}
 

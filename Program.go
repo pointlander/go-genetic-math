@@ -1,17 +1,17 @@
 package main
 
 import (
-	"github.com/rogeralsing/GoMath/world"
+	"github.com/rogeralsing/GoMath/domain"
 )
 
 func main() {
-	cases := world.Cases(world.Case(5*2+2, world.Input("x", 5), world.Input("y", 2), world.Input("z",2)),
-		world.Case(10*2+2, world.Input("x", 10), world.Input("y", 2), world.Input("z",2)),
-		world.Case(10*3+2, world.Input("x", 10), world.Input("y", 3), world.Input("z",2)),
-		world.Case(1000*3+5, world.Input("x", 1000), world.Input("y", 3), world.Input("z",5)),
-		world.Case(333*333+5, world.Input("x", 333), world.Input("y", 333), world.Input("z",5)))
+	problem := domain.DefineProblem(domain.Case(5*2+2, domain.Input("x", 5), domain.Input("y", 2), domain.Input("z", 2)),
+		domain.Case(10*2+2, domain.Input("x", 10), domain.Input("y", 2), domain.Input("z", 2)),
+		domain.Case(10*3+2, domain.Input("x", 10), domain.Input("y", 3), domain.Input("z", 2)),
+		domain.Case(1000*3+5, domain.Input("x", 1000), domain.Input("y", 3), domain.Input("z", 5)),
+		domain.Case(333*333+5, domain.Input("x", 333), domain.Input("y", 333), domain.Input("z", 5)))
 
-	node := cases.Solve()
-    node = node.Optimize()
+	node := problem.Solve()
+	node = node.Optimize()
 	println(node.String())
 }

@@ -1,4 +1,4 @@
-package world
+package domain
 
 import (
 	"bytes"
@@ -34,7 +34,7 @@ type CasesValue struct {
 	Cases []CaseValue
 }
 
-func Cases(cases ...CaseValue) CasesValue {
+func DefineProblem(cases ...CaseValue) CasesValue {
 	return CasesValue{Cases: cases}
 }
 
@@ -65,7 +65,7 @@ func (cases CasesValue) Eval(node ast.Node) float64 {
 }
 
 func (cases CasesValue) Solve() ast.Node {
-    parent := ast.Literal(1)
+	parent := ast.Literal(1)
 	parentFitness := cases.Eval(parent)
 	fmt.Printf("%v\t%v", parent, parentFitness)
 	println()
