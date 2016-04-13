@@ -3,12 +3,12 @@ package ast
 import "math/rand"
 
 const (
-	rate1 = 200
-	rate2 = 400
-	rate3 = 600
+	rate1 = 50
+	rate2 = 100
+	rate3 = 200
 )
 
-var letterRunes = []rune("xyz")
+var letterRunes = []rune("abcdefghijklmnopqrstuvxyz")
 
 func randomLetter() string {
 	return string(letterRunes[rand.Intn(len(letterRunes))])
@@ -36,11 +36,11 @@ func hit(max int32) bool {
 }
 
 func randomLiteralNode() Node {
-	return Literal(rand.Float64())
+	return Literal(rand.NormFloat64())
 }
 
 func randomBinaryNode() Node {
-	return &BinaryNode{Left: randomLiteralNode(), Right: randomLiteralNode(), Operator: randomOperator()}
+	return Binary(randomLiteralNode(), randomLiteralNode(), randomOperator())
 }
 
 func randomVariableNode() Node {
@@ -48,11 +48,11 @@ func randomVariableNode() Node {
 }
 
 func randomSplit(node Node) Node {
-	if hit(1) {
-		split := &BinaryNode{Left: randomLiteralNode(), Right: node, Operator: randomOperator()}
+	if hit(2) {
+		split := Binary(randomLiteralNode(), node, randomOperator())
 		return split
 	}
-	split := &BinaryNode{Left: node, Right: randomLiteralNode(), Operator: randomOperator()}
+	split := Binary(node, randomLiteralNode(), randomOperator())
 	return split
 }
 
@@ -63,7 +63,8 @@ func randomNode() Node {
 }
 
 func randomRemove(node *BinaryNode) Node {
-	if hit(1) {
+    
+	if hit(2) {
 		return node.Left
 	}
 	return node.Right
@@ -72,7 +73,8 @@ func randomRemove(node *BinaryNode) Node {
 func mutateAny(node Node) Node {
 	if hit(rate3) {
 		return randomNode()
-	} else if hit(rate3) {
+	} 
+    if hit(rate3) {
 		return randomSplit(node)
 	}
 
@@ -91,11 +93,11 @@ func (node *VariableNode) Mutate() Node {
 func (node *LiteralNode) Mutate() Node {
 	//mutate by offset
 	if hit(rate1) {
-		return Literal(node.Value - rand.NormFloat64()*10)
+		return Literal(node.Value - (rand.Float64() - 0.5)*10)
 	}
 	if hit(rate1) {
 		//hard mutation
-		return Literal(rand.Float64())
+		return randomLiteralNode()
 	}
 	if hit(rate1) {
 		//hard mutation to integer
@@ -106,18 +108,19 @@ func (node *LiteralNode) Mutate() Node {
 
 //Mutate the given node
 func (node *BinaryNode) Mutate() Node {
-    //remove left or right
-    if hit(rate1) {
+	//remove left or right
+	if hit(rate1) {
 		return randomRemove(node)
 	}
-    //mutate children
+	//mutate children
+    left := node.Left.Mutate()
+    right := node.Right.Mutate()
+    operator := node.Operator;
 	if hit(rate1) {
-		return &BinaryNode{Left: node.Left.Mutate(), Right: node.Right.Mutate(), Operator: node.Operator}
+		operator = randomOperator()
 	}
-    //mutate operator
-    if hit(rate1) {
-		return &BinaryNode{Left: node.Left, Right: node.Right, Operator: randomOperator()}
-	}
+    
+    mutated := Binary(left,right,operator)
 
-	return mutateAny(node)
+	return mutateAny(mutated)
 }

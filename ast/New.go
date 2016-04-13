@@ -17,6 +17,10 @@ func Mul(left Node, right Node) Node {
 	return &BinaryNode {Left: left, Right: right, Operator: OpMul}
 }
 
+func Binary(left Node, right Node, operator BinaryOp) Node {
+	return &BinaryNode {Left: left, Right: right, Operator: operator}
+}
+
 func Literal(value float64) Node {
 	return &LiteralNode{Value: value}
 }
