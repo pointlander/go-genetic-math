@@ -12,5 +12,6 @@ func main() {
 		world.Case(333*333+5, world.Input("x", 333), world.Input("y", 333), world.Input("z",5)))
 
 	node := cases.Solve()
+    node = node.Optimize()
 	println(node.String())
 }

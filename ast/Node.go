@@ -7,6 +7,7 @@ type Node interface {
 	String() string
 	Mutate() Node
     IsConstant() bool
+    Optimize() Node
 }
 
 type LiteralNode struct {
