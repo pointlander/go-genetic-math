@@ -3,26 +3,31 @@ package ast
 import "math/rand"
 
 const (
-	rate1 = 150
-	rate2 = 200
-	rate3 = 350
+	rate1 = 200
+	rate2 = 400
+	rate3 = 600
 )
 
 var letterRunes = []rune("xyz")
 
-var randomBinaryCreator = []func(Node, Node) Node{
-	Add,
-	Sub,
-	Mul,
-	Div,
+func randomLetter() string {
+	return string(letterRunes[rand.Intn(len(letterRunes))])
 }
 
-var randomNodeCreators = []func() Node{
+var operators = []BinaryOp{
+	OpAdd,
+	OpSub,
+	OpMul,
+	OpDiv,
+}
+
+func randomOperator() BinaryOp {
+	return operators[rand.Intn(len(operators))]
+}
+
+var nodeCreators = []func() Node{
 	randomLiteralNode,
-	randomAddNode,
-	randomSubNode,
-	randomMulNode,
-	randomDivNode,
+	randomBinaryNode,
 	randomVariableNode,
 }
 
@@ -34,47 +39,34 @@ func randomLiteralNode() Node {
 	return Literal(rand.Float64())
 }
 
-func randomAddNode() Node {
-	return Add(randomLiteralNode(), randomLiteralNode())
-}
-
-func randomSubNode() Node {
-	return Sub(randomLiteralNode(), randomLiteralNode())
-}
-
-func randomDivNode() Node {
-	return Div(randomLiteralNode(), randomLiteralNode())
-}
-
-func randomMulNode() Node {
-	return Mul(randomLiteralNode(), randomLiteralNode())
+func randomBinaryNode() Node {
+	return &BinaryNode{Left: randomLiteralNode(), Right: randomLiteralNode(), Operator: randomOperator()}
 }
 
 func randomVariableNode() Node {
-	return Var(string(letterRunes[rand.Intn(len(letterRunes))]))
+	return Var(randomLetter())
 }
 
 func randomSplit(node Node) Node {
-	creator := randomBinaryCreator[rand.Intn(len(randomBinaryCreator))]
 	if hit(1) {
-		split := creator(node, randomLiteralNode())
+		split := &BinaryNode{Left: randomLiteralNode(), Right: node, Operator: randomOperator()}
 		return split
 	}
-	split := creator(randomLiteralNode(), node)
+	split := &BinaryNode{Left: node, Right: randomLiteralNode(), Operator: randomOperator()}
 	return split
 }
 
 func randomNode() Node {
-	creator := randomNodeCreators[rand.Intn(len(randomNodeCreators))]
+	creator := nodeCreators[rand.Intn(len(nodeCreators))]
 	node := creator()
 	return node
 }
 
 func randomRemove(node *BinaryNode) Node {
-    if hit(1) {
-        return node.Left
-    }
-    return node.Right
+	if hit(1) {
+		return node.Left
+	}
+	return node.Right
 }
 
 func mutateAny(node Node) Node {
@@ -90,8 +82,7 @@ func mutateAny(node Node) Node {
 //Mutate the given node
 func (node *VariableNode) Mutate() Node {
 	if hit(rate2) {
-        variable := string(letterRunes[rand.Intn(len(letterRunes))])
-		return Var(variable)
+		return Var(randomLetter())
 	}
 	return mutateAny(node)
 }
@@ -100,13 +91,13 @@ func (node *VariableNode) Mutate() Node {
 func (node *LiteralNode) Mutate() Node {
 	//mutate by offset
 	if hit(rate1) {
-		return Literal(node.Value - rand.NormFloat64()*10)	
-	} 
-    if hit(rate1) {
+		return Literal(node.Value - rand.NormFloat64()*10)
+	}
+	if hit(rate1) {
 		//hard mutation
 		return Literal(rand.Float64())
 	}
-    if hit(rate1) {
+	if hit(rate1) {
 		//hard mutation to integer
 		return Literal(float64(int(node.Value)))
 	}
@@ -115,11 +106,12 @@ func (node *LiteralNode) Mutate() Node {
 
 //Mutate the given node
 func (node *BinaryNode) Mutate() Node {
-	if hit(rate1) {
-		return &BinaryNode { Left: node.Left.Mutate(), Right: node.Right.Mutate(), Operator: node.Operator}
-	}
     if hit(rate1) {
-        return randomRemove(node)
-    }
+		return randomRemove(node)
+	}
+	if hit(rate1) {
+		return &BinaryNode{Left: node.Left.Mutate(), Right: node.Right.Mutate(), Operator: node.Operator}
+	}
+
 	return mutateAny(node)
 }
