@@ -8,7 +8,7 @@ const (
 	rate3 = 200
 )
 
-var letterRunes = []rune("abcdefghijklmnopqrstuvxyz")
+var letterRunes = []rune("xyz")
 
 func randomLetter() string {
 	return string(letterRunes[rand.Intn(len(letterRunes))])
