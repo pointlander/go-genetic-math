@@ -122,9 +122,9 @@ func (node *BinaryNode) Mutate() Node {
 	return mutateAny(mutated)
 }
 
-func (operator BinaryOp) Mutate() BinaryOp{
-    if hit(rate1) {
+func (operator BinaryOp) Mutate() BinaryOp {
+	if hit(rate1) {
 		return randomOperator()
 	}
-    return operator
+	return operator
 }

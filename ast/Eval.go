@@ -15,7 +15,7 @@ func (node *BinaryNode) Eval(context *engine.Context) float64 {
 	case OpMul == node.Operator:
 		return left * node.Right.Eval(context)
 	case OpDiv == node.Operator:
-		return left / node.Right.Eval(context)
+		return left / node.Right.Eval(context) //TODO: check for div by zero
 	default:
 		panic("unknown")
 	}
