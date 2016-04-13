@@ -2,24 +2,24 @@ package ast
 
 import "github.com/rogeralsing/GoMath/engine"
 
-func (node *AddNode) Eval(context *engine.Context) float64 {
-	return node.Left.Eval(context) + node.Right.Eval(context)
-}
-
-func (node *DivNode) Eval(context *engine.Context) float64 {
-	return node.Left.Eval(context) / node.Right.Eval(context)
+func (node *BinaryNode) Eval(context *engine.Context) float64 {
+	left := node.Left.Eval(context)
+	switch {
+	case OpAdd == node.Operator:
+		return left + node.Right.Eval(context)
+	case OpSub == node.Operator:
+		return left - node.Right.Eval(context)
+	case OpMul == node.Operator:
+		return left * node.Right.Eval(context)
+	case OpDiv == node.Operator:
+		return left / node.Right.Eval(context)
+	default:
+		return 0
+	}
 }
 
 func (node *LiteralNode) Eval(context *engine.Context) float64 {
 	return node.Value
-}
-
-func (node *MulNode) Eval(context *engine.Context) float64 {
-	return node.Left.Eval(context) * node.Right.Eval(context)
-}
-
-func (node *SubNode) Eval(context *engine.Context) float64 {
-	return node.Left.Eval(context) - node.Right.Eval(context)
 }
 
 //Eval evaluates the value of the variable using a engine.Context

@@ -70,7 +70,7 @@ func randomNode() Node {
 	return node
 }
 
-func randomRemove(node BinaryNode) Node {
+func randomRemove(node *BinaryNode) Node {
     if hit(1) {
         return node.Left
     }
@@ -113,45 +113,12 @@ func (node *LiteralNode) Mutate() Node {
 }
 
 //Mutate the given node
-func (node *AddNode) Mutate() Node {
+func (node *BinaryNode) Mutate() Node {
 	if hit(rate1) {
 		return Add(node.Left.Mutate(), node.Right.Mutate())
 	}
     if hit(rate1) {
-        return randomRemove(node.BinaryNode)
-    }
-	return mutateAny(node)
-}
-
-//Mutate the given node
-func (node *SubNode) Mutate() Node {
-	if hit(rate1) {
-		return Sub(node.Left.Mutate(), node.Right.Mutate())
-	}
-    if hit(rate1) {
-        return randomRemove(node.BinaryNode)
-    }
-	return mutateAny(node)
-}
-
-//Mutate the given node
-func (node *DivNode) Mutate() Node {
-	if hit(rate1) {
-		return Div(node.Left.Mutate(), node.Right.Mutate())
-	}
-    if hit(rate1) {
-        return randomRemove(node.BinaryNode)
-    }
-	return mutateAny(node)
-}
-
-//Mutate the given node
-func (node *MulNode) Mutate() Node {
-	if hit(rate1) {
-		return Mul(node.Left.Mutate(), node.Right.Mutate())
-	}
-    if hit(rate1) {
-        return randomRemove(node.BinaryNode)
+        return randomRemove(node)
     }
 	return mutateAny(node)
 }

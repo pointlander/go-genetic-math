@@ -12,25 +12,19 @@ type LiteralNode struct {
 	Value float64
 }
 
+type BinaryOp int
+
+const (
+	OpAdd BinaryOp = iota
+	OpSub
+	OpDiv
+	OpMul
+)
+
 type BinaryNode struct {
-    Left  Node
+	Left  Node
 	Right Node
-}
-
-type AddNode struct {
-	BinaryNode
-}
-
-type DivNode struct {
-	BinaryNode
-}
-
-type MulNode struct {
-	BinaryNode
-}
-
-type SubNode struct {
-	BinaryNode
+    Operator BinaryOp
 }
 
 //VariableNode represents a variable
