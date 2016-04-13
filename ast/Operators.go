@@ -1,6 +1,6 @@
 package ast
 
-import "github.com/rogeralsing/GoMath/engine"
+import "github.com/rogeralsing/go-genetic-math/engine"
 
 //TODO: maybe I should make this mess polymorphic
 

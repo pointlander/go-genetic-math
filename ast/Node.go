@@ -1,6 +1,6 @@
 package ast
 
-import "github.com/rogeralsing/GoMath/engine"
+import "github.com/rogeralsing/go-genetic-math/engine"
 
 //Node represents an abstract AST node and the behaviors available on it
 type Node interface {

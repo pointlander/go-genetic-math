@@ -1,7 +1,7 @@
 package ast
 
 import (
-	"github.com/rogeralsing/GoMath/engine"
+	"github.com/rogeralsing/go-genetic-math/engine"
 )
 
 func isConstantZero(node Node) bool {

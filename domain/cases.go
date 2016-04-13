@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/rogeralsing/GoMath/ast"
-	"github.com/rogeralsing/GoMath/engine"
+	"github.com/rogeralsing/go-genetic-math/ast"
+	"github.com/rogeralsing/go-genetic-math/engine"
 )
 
 type InputValue struct {

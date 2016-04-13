@@ -1,6 +1,6 @@
 package ast
 
-import "github.com/rogeralsing/GoMath/engine"
+import "github.com/rogeralsing/go-genetic-math/engine"
 
 //Eval evaluates the result of the binary operation
 func (node *BinaryNode) Eval(context *engine.Context) float64 {

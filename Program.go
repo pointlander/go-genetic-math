@@ -2,7 +2,7 @@ package main
 
 import (
     "fmt"
-	"github.com/rogeralsing/GoMath/domain"
+	"github.com/rogeralsing/go-genetic-math/domain"
 )
 
 func main() {
