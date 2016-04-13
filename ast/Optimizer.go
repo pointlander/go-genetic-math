@@ -6,9 +6,9 @@ import (
 
 func isConstantZero(node Node) bool {
 	if !node.IsConstant() {
-        return false
-    }
-    
+		return false
+	}
+
 	value := node.Eval(engine.NewContext())
 	return value == 0
 }
