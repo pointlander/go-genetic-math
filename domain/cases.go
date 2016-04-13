@@ -68,7 +68,7 @@ func (cases CasesValue) Solve() ast.Node {
 	parent := ast.Literal(1)
 	parentFitness := cases.Eval(parent)
 	fmt.Printf("%v\t%v", parent, parentFitness)
-	println()
+	fmt.Println()
 	for {
 		child := parent.Mutate()
 		childFitness := cases.Eval(child)
@@ -77,8 +77,8 @@ func (cases CasesValue) Solve() ast.Node {
 			parentFitness = childFitness
 
 			fmt.Printf("%v\t%v", parent, parentFitness)
-			println()
-			println()
+			fmt.Println()
+			fmt.Println()
 			if parentFitness == 0 {
 				return parent.Optimize()
 			}

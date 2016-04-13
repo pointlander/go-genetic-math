@@ -1,6 +1,7 @@
 package main
 
 import (
+    "fmt"
 	"github.com/rogeralsing/GoMath/domain"
 )
 
@@ -16,5 +17,5 @@ func main() {
     //try to find a formula that matches the above description
 	node := problem.Solve()
 	
-	println(node.String())
+    fmt.Println(node.String())
 }
