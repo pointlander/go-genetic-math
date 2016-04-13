@@ -22,9 +22,9 @@ const (
 )
 
 type BinaryNode struct {
-	Left  Node
-	Right Node
-    Operator BinaryOp
+	Left     Node
+	Right    Node
+	Operator BinaryOp
 }
 
 //VariableNode represents a variable

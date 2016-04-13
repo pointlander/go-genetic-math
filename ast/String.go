@@ -4,7 +4,7 @@ import "fmt"
 import "strconv"
 
 func (node *BinaryNode) String() string {
-    var op string
+	var op string
 	switch {
 	case OpAdd == node.Operator:
 		op = "+"
@@ -15,8 +15,8 @@ func (node *BinaryNode) String() string {
 	case OpDiv == node.Operator:
 		op = "/"
 	}
-    
-    return fmt.Sprintf("(%v%v%v)", node.Left, op ,node.Right)
+
+	return fmt.Sprintf("(%v%v%v)", node.Left, op, node.Right)
 }
 
 func (node *LiteralNode) String() string {

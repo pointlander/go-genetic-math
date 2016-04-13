@@ -5,8 +5,8 @@ import "github.com/rogeralsing/GoMath/engine"
 //Eval evaluates the result of the binary operation
 func (node *BinaryNode) Eval(context *engine.Context) float64 {
 	left := node.Left.Eval(context)
-    
-    //eval right inline to enable short circuiting if we add operations like OR, AND
+
+	//eval right inline to enable short circuiting if we add operations like OR, AND
 	switch {
 	case OpAdd == node.Operator:
 		return left + node.Right.Eval(context)

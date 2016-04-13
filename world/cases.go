@@ -3,7 +3,8 @@ package world
 import (
 	"bytes"
 	"fmt"
-    "math"
+	"math"
+
 	"github.com/rogeralsing/GoMath/ast"
 	"github.com/rogeralsing/GoMath/engine"
 )
@@ -61,4 +62,26 @@ func (cases CasesValue) Eval(node ast.Node) float64 {
 	}
 
 	return total //+ float64(len(node.String())) / 10000
+}
+
+func (cases CasesValue) Solve() ast.Node {
+    parent := ast.Literal(1)
+	parentFitness := cases.Eval(parent)
+	fmt.Printf("%v\t%v", parent, parentFitness)
+	println()
+	for {
+		child := parent.Mutate()
+		childFitness := cases.Eval(child)
+		if childFitness < parentFitness {
+			parent = child
+			parentFitness = childFitness
+
+			fmt.Printf("%v\t%v", parent, parentFitness)
+			println()
+			println()
+			if parentFitness == 0 {
+				return parent
+			}
+		}
+	}
 }

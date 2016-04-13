@@ -63,7 +63,7 @@ func randomNode() Node {
 }
 
 func randomRemove(node *BinaryNode) Node {
-    
+
 	if hit(2) {
 		return node.Left
 	}
@@ -73,8 +73,8 @@ func randomRemove(node *BinaryNode) Node {
 func mutateAny(node Node) Node {
 	if hit(rate3) {
 		return randomNode()
-	} 
-    if hit(rate3) {
+	}
+	if hit(rate3) {
 		return randomSplit(node)
 	}
 
@@ -93,7 +93,7 @@ func (node *VariableNode) Mutate() Node {
 func (node *LiteralNode) Mutate() Node {
 	//mutate by offset
 	if hit(rate1) {
-		return Literal(node.Value - (rand.Float64() - 0.5)*10)
+		return Literal(node.Value - (rand.Float64()-0.5)*10)
 	}
 	if hit(rate1) {
 		//hard mutation
@@ -113,14 +113,14 @@ func (node *BinaryNode) Mutate() Node {
 		return randomRemove(node)
 	}
 	//mutate children
-    left := node.Left.Mutate()
-    right := node.Right.Mutate()
-    operator := node.Operator;
+	left := node.Left.Mutate()
+	right := node.Right.Mutate()
+	operator := node.Operator
 	if hit(rate1) {
 		operator = randomOperator()
 	}
-    
-    mutated := Binary(left,right,operator)
+
+	mutated := Binary(left, right, operator)
 
 	return mutateAny(mutated)
 }
