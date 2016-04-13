@@ -12,24 +12,25 @@ type LiteralNode struct {
 	Value float64
 }
 
-type AddNode struct {
-	Left  Node
+type BinaryNode struct {
+    Left  Node
 	Right Node
+}
+
+type AddNode struct {
+	BinaryNode
 }
 
 type DivNode struct {
-	Left  Node
-	Right Node
+	BinaryNode
 }
 
 type MulNode struct {
-	Left  Node
-	Right Node
+	BinaryNode
 }
 
 type SubNode struct {
-	Left  Node
-	Right Node
+	BinaryNode
 }
 
 //VariableNode represents a variable

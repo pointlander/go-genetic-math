@@ -60,5 +60,5 @@ func (cases CasesValue) Eval(node ast.Node) float64 {
 		total += diff
 	}
 
-	return total
+	return total + float64(len(node.String())) / 1000
 }

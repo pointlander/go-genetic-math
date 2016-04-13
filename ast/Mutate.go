@@ -10,7 +10,14 @@ const (
 
 var letterRunes = []rune("xyz")
 
-var creators = []func() Node{
+var randomBinaryCreator = []func(Node, Node) Node{
+	Add,
+	Sub,
+	Mul,
+	Div,
+}
+
+var randomNodeCreators = []func() Node{
 	randomLiteralNode,
 	randomAddNode,
 	randomSubNode,
@@ -47,21 +54,45 @@ func randomVariableNode() Node {
 	return Var(string(letterRunes[rand.Intn(len(letterRunes))]))
 }
 
+func randomSplit(node Node) Node {
+	creator := randomBinaryCreator[rand.Intn(len(randomBinaryCreator))]
+	if hit(1) {
+		split := creator(node, randomLiteralNode())
+		return split
+	}
+	split := creator(randomLiteralNode(), node)
+	return split
+}
+
 func randomNode() Node {
-	creator := creators[rand.Intn(len(creators))]
+	creator := randomNodeCreators[rand.Intn(len(randomNodeCreators))]
 	node := creator()
+	return node
+}
+
+func randomRemove(node BinaryNode) Node {
+    if hit(1) {
+        return node.Left
+    }
+    return node.Right
+}
+
+func mutateAny(node Node) Node {
+	if hit(rate3) {
+		return randomNode()
+	} else if hit(rate3) {
+		return randomSplit(node)
+	}
+
 	return node
 }
 
 //Mutate the given node
 func (node *VariableNode) Mutate() Node {
 	if hit(rate2) {
-		copy := &VariableNode{Variable: node.Variable}
-		copy.Variable = string(letterRunes[rand.Intn(len(letterRunes))])
-	} else if hit(rate3) {
-		return randomNode()
+		return Var(string(letterRunes[rand.Intn(len(letterRunes))]))
 	}
-	return node
+	return mutateAny(node)
 }
 
 //Mutate the given node
@@ -71,53 +102,56 @@ func (node *LiteralNode) Mutate() Node {
 		copy := &LiteralNode{Value: node.Value}
 		copy.Value = node.Value - rand.NormFloat64()*10
 		return copy
-	} else if hit(rate1) {
+	} 
+    if hit(rate1) {
 		//hard mutation
 		copy := &LiteralNode{Value: node.Value}
 		copy.Value = rand.Float64()
 		return copy
-	} else if hit(rate3) {
-		return randomNode()
 	}
-	return node
+	return mutateAny(node)
 }
 
 //Mutate the given node
 func (node *AddNode) Mutate() Node {
 	if hit(rate1) {
 		return Add(node.Left.Mutate(), node.Right.Mutate())
-	} else if hit(rate3) {
-		return randomNode()
 	}
-	return node
+    if hit(rate1) {
+        return randomRemove(node.BinaryNode)
+    }
+	return mutateAny(node)
 }
 
 //Mutate the given node
 func (node *SubNode) Mutate() Node {
 	if hit(rate1) {
 		return Sub(node.Left.Mutate(), node.Right.Mutate())
-	} else if hit(rate3) {
-		return randomNode()
 	}
-	return node
+    if hit(rate1) {
+        return randomRemove(node.BinaryNode)
+    }
+	return mutateAny(node)
 }
 
 //Mutate the given node
 func (node *DivNode) Mutate() Node {
 	if hit(rate1) {
 		return Div(node.Left.Mutate(), node.Right.Mutate())
-	} else if hit(rate3) {
-		return randomNode()
 	}
-	return node
+    if hit(rate1) {
+        return randomRemove(node.BinaryNode)
+    }
+	return mutateAny(node)
 }
 
 //Mutate the given node
 func (node *MulNode) Mutate() Node {
 	if hit(rate1) {
 		return Mul(node.Left.Mutate(), node.Right.Mutate())
-	} else if hit(rate3) {
-		return randomNode()
 	}
-	return node
+    if hit(rate1) {
+        return randomRemove(node.BinaryNode)
+    }
+	return mutateAny(node)
 }

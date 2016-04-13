@@ -32,6 +32,7 @@ func main() {
 
 			fmt.Printf("%v\t%v", parent, parentFitness)
             println()
+            println()
 		}
 	}
 }
