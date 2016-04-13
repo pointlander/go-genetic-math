@@ -4,21 +4,7 @@ import "github.com/rogeralsing/GoMath/engine"
 
 //Eval evaluates the result of the binary operation
 func (node *BinaryNode) Eval(context *engine.Context) float64 {
-	left := node.Left.Eval(context)
-
-	//eval right inline to enable short circuiting if we add operations like OR, AND
-	switch {
-	case OpAdd == node.Operator:
-		return left + node.Right.Eval(context)
-	case OpSub == node.Operator:
-		return left - node.Right.Eval(context)
-	case OpMul == node.Operator:
-		return left * node.Right.Eval(context)
-	case OpDiv == node.Operator:
-		return left / node.Right.Eval(context) //TODO: check for div by zero
-	default:
-		panic("unknown")
-	}
+	return node.Operator.Apply(node.Left, node.Right, context)
 }
 
 //Eval evaluates the value of the literal node

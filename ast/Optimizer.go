@@ -5,10 +5,32 @@ import (
 )
 
 func (node *BinaryNode) IsConstant() bool {
-	left := node.Left.IsConstant()
-	right := node.Right.IsConstant()
 
-	return left && right
+	left := node.Left
+	right := node.Right
+
+	//if this is a mul node and one of the operands are 0, then this is constant
+	if node.Operator == OpMul {
+		if left.IsConstant() {
+			context := engine.NewContext()
+			leftValue := left.Eval(context)
+
+			if leftValue == 0 {
+				return true
+			}
+		}
+
+		if right.IsConstant() {
+			context := engine.NewContext()
+			rightValue := right.Eval(context)
+
+			if rightValue == 0 {
+				return true
+			}
+		}
+	}
+
+	return node.Left.IsConstant() && node.Right.IsConstant()
 }
 
 func (node *LiteralNode) IsConstant() bool {
@@ -31,7 +53,7 @@ func (node *BinaryNode) Optimize() Node {
 	left := node.Left.Optimize()
 	right := node.Right.Optimize()
 
-    //remove any + or - of constant 0
+	//remove any + or - of constant 0
 	if node.Operator == OpAdd || node.Operator == OpSub {
 		if left.IsConstant() {
 			context := engine.NewContext()
@@ -51,10 +73,10 @@ func (node *BinaryNode) Optimize() Node {
 			}
 		}
 	}
-    
-    //return literal 0 for any multiplication with or by 0
-    if node.Operator == OpMul {
-        if left.IsConstant() {
+
+	//return literal 0 for any multiplication with or by 0
+	if node.Operator == OpMul {
+		if left.IsConstant() {
 			context := engine.NewContext()
 			leftValue := left.Eval(context)
 
@@ -71,7 +93,7 @@ func (node *BinaryNode) Optimize() Node {
 				return Literal(0)
 			}
 		}
-    }
+	}
 
 	return Binary(left, right, node.Operator)
 }
