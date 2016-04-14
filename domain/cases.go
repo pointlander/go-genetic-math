@@ -42,10 +42,11 @@ func DefineProblem(cases ...CaseValue) CasesValue {
 func (cases CasesValue) String() string {
 	var buffer bytes.Buffer
 	for x, c := range cases.Cases {
-		buffer.WriteString(fmt.Sprintf("Case %v = %v \n", x, c.Result))
+		buffer.WriteString(fmt.Sprintf("Case %v\n", x))
 		for _, i := range c.Inputs {
 			buffer.WriteString(fmt.Sprintf("\tVar %s = %v \n", i.Variable, i.Value))
 		}
+		buffer.WriteString(fmt.Sprintf("\tExpected %v \n", c.Result))
 	}
 	return fmt.Sprint(buffer.String())
 }
@@ -62,7 +63,7 @@ func (cases CasesValue) Fitness(node ast.Node) float64 {
 		total += diff
 	}
 
-	return total //+ float64(len(node.String())) / 10000
+	return total
 }
 
 type NodeFitness struct {
@@ -88,6 +89,8 @@ func calculateFitness(nodes []ast.Node, cases CasesValue) []NodeFitness {
 }
 
 func (cases CasesValue) Solve() ast.Node {
+	
+	fmt.Println(cases)
 
 	populationSize := 5
 	var population = make([]ast.Node, populationSize)
@@ -118,7 +121,10 @@ func (cases CasesValue) Solve() ast.Node {
 
 		//did we find a solution? if so return it
 		if best.Fitness == 0 {
+			fmt.Println()
+			fmt.Println("Solved!")
 			solution := best.Node.Optimize()
+			fmt.Printf("%v",solution)
 			return solution
 		}
 

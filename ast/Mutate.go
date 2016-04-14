@@ -25,12 +25,6 @@ func randomOperator() BinaryOp {
 	return operators[rand.Intn(len(operators))]
 }
 
-var nodeCreators = []func() Node{
-	randomLiteralNode,
-	randomBinaryNode,
-	randomVariableNode,
-}
-
 func hit(max int32) bool {
 	return rand.Int31n(max) == 1
 }
@@ -40,7 +34,7 @@ func randomLiteralNode() Node {
 }
 
 func randomBinaryNode() Node {
-	return Binary(randomLiteralNode(), randomLiteralNode(), randomOperator())
+	return Binary(randomNode(), randomNode(), randomOperator())
 }
 
 func randomVariableNode() Node {
@@ -57,9 +51,13 @@ func randomSplit(node Node) Node {
 }
 
 func randomNode() Node {
-	creator := nodeCreators[rand.Intn(len(nodeCreators))]
-	node := creator()
-	return node
+	if hit(4) {
+		return randomLiteralNode()
+	}
+	if hit(4) {
+		return randomBinaryNode()
+	}
+	return randomVariableNode()
 }
 
 func randomRemove(node *BinaryNode) Node {
@@ -76,9 +74,6 @@ func mutateAny(node Node) Node {
 	}
 	if hit(rate3) {
 		return randomSplit(node)
-	}
-	if hit(rate1) {
-		return node.Optimize()
 	}
 
 	return node
