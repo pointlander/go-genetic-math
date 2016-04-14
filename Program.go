@@ -12,7 +12,20 @@ func main() {
 		domain.Case(10*2+2, domain.Input("x", 10), domain.Input("y", 2), domain.Input("z", 2)),
 		domain.Case(10*3+2, domain.Input("x", 10), domain.Input("y", 3), domain.Input("z", 2)),
 		domain.Case(1000*3+5, domain.Input("x", 1000), domain.Input("y", 3), domain.Input("z", 5)),
-		domain.Case(333*333+5, domain.Input("x", 333), domain.Input("y", 333), domain.Input("z", 5)))
+		domain.Case(333*333+5, domain.Input("x", 333), domain.Input("y", 333), domain.Input("z", 5)))       
+
+
+/*
+2 + 3 = 10
+7 + 2 = 63
+6 + 5 = 66
+8 + 4 = 96
+
+    problem := domain.DefineProblem(domain.Case(10,domain.Input("x",2),domain.Input("y",3)),
+    domain.Case(63,domain.Input("x",7),domain.Input("y",2)),
+    domain.Case(66,domain.Input("x",6),domain.Input("y",5)),
+    domain.Case(96,domain.Input("x",8),domain.Input("y",4)))
+    */
 
     //try to find a formula that matches the above description
 	node := problem.Solve()

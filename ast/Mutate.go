@@ -77,6 +77,9 @@ func mutateAny(node Node) Node {
 	if hit(rate3) {
 		return randomSplit(node)
 	}
+	if hit(rate1) {
+		return node.Optimize()
+	}
 
 	return node
 }
@@ -101,8 +104,10 @@ func (node *LiteralNode) Mutate() Node {
 	}
 	if hit(rate1) {
 		//hard mutation to integer
+
 		return Literal(float64(int(node.Value)))
 	}
+
 	return mutateAny(node)
 }
 

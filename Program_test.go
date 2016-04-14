@@ -3,8 +3,8 @@ package main
 import (
 	"testing"
 
-	"github.com/rogeralsing/GoMath/ast"
-	"github.com/rogeralsing/GoMath/engine"
+	"github.com/rogeralsing/go-genetic-math/ast"
+	"github.com/rogeralsing/go-genetic-math/engine"
 	"github.com/stretchr/testify/assert"
 )
 
