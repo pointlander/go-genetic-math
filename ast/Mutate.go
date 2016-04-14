@@ -50,11 +50,15 @@ func randomSplit(node Node) Node {
 	return split
 }
 
+//Prio
+//VariableNode
+//BinaryNode
+//LiteralNode
 func randomNode() Node {
-	if hit(4) {
+	if hit(500) {
 		return randomLiteralNode()
 	}
-	if hit(4) {
+	if hit(20) {
 		return randomBinaryNode()
 	}
 	return randomVariableNode()

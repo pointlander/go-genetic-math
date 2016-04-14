@@ -3,8 +3,10 @@ package domain
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"math"
 	"sort"
+	"time"
 
 	"github.com/rogeralsing/go-genetic-math/ast"
 	"github.com/rogeralsing/go-genetic-math/engine"
@@ -89,10 +91,14 @@ func calculateFitness(nodes []ast.Node, cases CasesValue) []NodeFitness {
 }
 
 func (cases CasesValue) Solve() ast.Node {
-	
-	fmt.Println(cases)
 
-	populationSize := 5
+	start := time.Now()
+	log.Println(cases)
+
+	//untill I get genetic crossover, there is not much benefit of having a larger population size
+
+	populationSize := 1
+	generaton := 0
 	var population = make([]ast.Node, populationSize)
 
 	//initialize with dummy data
@@ -115,16 +121,16 @@ func (cases CasesValue) Solve() ast.Node {
 		//if we got a better fitness now, print it
 		if best.Fitness < bestFitness {
 			bestFitness = best.Fitness
-			fmt.Printf("%v\t%v", best.Fitness, best.Node)
-			fmt.Println()
+			log.Printf("%v\t%v", best.Fitness, best.Node)
 		}
 
 		//did we find a solution? if so return it
 		if best.Fitness == 0 {
-			fmt.Println()
-			fmt.Println("Solved!")
 			solution := best.Node.Optimize()
-			fmt.Printf("%v",solution)
+			log.Printf("Solved %v", solution)
+			log.Printf("Generations %v", generaton)
+			elapsed := time.Since(start)
+			log.Printf("Time to find solution %s", elapsed)			
 			return solution
 		}
 
@@ -132,5 +138,6 @@ func (cases CasesValue) Solve() ast.Node {
 		for i := 0; i < populationSize; i++ {
 			population[i] = sorted[i].Node
 		}
+		generaton++
 	}
 }
