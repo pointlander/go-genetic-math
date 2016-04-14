@@ -2,21 +2,30 @@ package ast
 
 import "github.com/rogeralsing/go-genetic-math/engine"
 import "math"
+import "fmt"
 
 //TODO: maybe I should make this mess polymorphic
 
-type BinaryOp int
+type BinaryOp interface {
+	Apply(left Node, right Node, context *engine.Context) float64
+	String(left Node, right Node) string
+}
 
-const (
-	OpAdd BinaryOp = iota
-	OpSub
-	OpDiv
-	OpMul
-	OpMod
-	OpOr
-	OpAnd
-	// OpXor   //Xor messes things up big time, dont use
-)
+type OpAddValue struct{}
+type OpSubValue struct{}
+type OpDivValue struct{}
+type OpMulValue struct{}
+type OpModValue struct{}
+type OpOrValue struct{}
+type OpAndValue struct{}
+
+var OpAdd = OpAddValue{}
+var OpSub = OpSubValue{}
+var OpDiv = OpDivValue{}
+var OpMul = OpMulValue{}
+var OpMod = OpModValue{}
+var OpOr = OpOrValue{}
+var OpAnd = OpAndValue{}
 
 var operators = []BinaryOp{
 	OpAdd,
@@ -29,52 +38,46 @@ var operators = []BinaryOp{
 	// OpXor,
 }
 
-var operatorSymbols = [...]string{
-	"+",
-	"-",
-	"/",
-	"*",
-	"%",
-	"|",
-	"&",
-	// "^",
+func (OpAddValue) Apply(left Node, right Node, context *engine.Context) float64 {
+	return left.Eval(context) + right.Eval(context)
+}
+func (OpSubValue) Apply(left Node, right Node, context *engine.Context) float64 {
+	return left.Eval(context) - right.Eval(context)
+}
+func (OpDivValue) Apply(left Node, right Node, context *engine.Context) float64 {
+	return left.Eval(context) / right.Eval(context)
+}
+func (OpMulValue) Apply(left Node, right Node, context *engine.Context) float64 {
+	return left.Eval(context) * right.Eval(context)
+}
+func (OpModValue) Apply(left Node, right Node, context *engine.Context) float64 {
+	return math.Mod(left.Eval(context), right.Eval(context))
+}
+func (OpOrValue) Apply(left Node, right Node, context *engine.Context) float64 {
+	return float64(int(left.Eval(context)) | int(right.Eval(context)))
+}
+func (OpAndValue) Apply(left Node, right Node, context *engine.Context) float64 {
+	return float64(int(left.Eval(context)) & int(right.Eval(context)))
 }
 
-var operatorLogic = [...]func(Node, Node, *engine.Context) float64{
-	func(left Node, right Node, context *engine.Context) float64 {
-		return left.Eval(context) + right.Eval(context)
-	},
-	func(left Node, right Node, context *engine.Context) float64 {
-		return left.Eval(context) - right.Eval(context)
-	},
-	func(left Node, right Node, context *engine.Context) float64 {
-		return left.Eval(context) / right.Eval(context)
-	},
-	func(left Node, right Node, context *engine.Context) float64 {
-		return left.Eval(context) * right.Eval(context)
-	},
-	func(left Node, right Node, context *engine.Context) float64 {
-		return math.Mod (left.Eval(context) , right.Eval(context))
-	},
-	
-	//these will not print well as it will look like we are "or"ing and "and" ing floats
-	func(left Node, right Node, context *engine.Context) float64 {
-		return float64(int(left.Eval(context)) | int(right.Eval(context)))
-	},
-	func(left Node, right Node, context *engine.Context) float64 {
-		return float64(int(left.Eval(context)) & int(right.Eval(context)))
-	},
-	// func(left Node, right Node, context *engine.Context) float64 {
-	// 	return float64(int(left.Eval(context)) ^ int(right.Eval(context)))
-	// },
+func (OpAddValue) String(left Node, right Node) string {
+	return fmt.Sprintf("(%v+%v)", left, right)
 }
-
-func (op BinaryOp) Apply(left Node, right Node, context *engine.Context) float64 {
-	logic := operatorLogic[op]
-	res := logic(left, right, context)
-	return res
+func (OpSubValue) String(left Node, right Node) string {
+	return fmt.Sprintf("(%v-%v)", left, right)
 }
-
-func (op BinaryOp) String() string {
-	return operatorSymbols[op]
+func (OpDivValue) String(left Node, right Node) string {
+	return fmt.Sprintf("(%v/%v)", left, right)
+}
+func (OpMulValue) String(left Node, right Node) string {
+	return fmt.Sprintf("(%v*%v)", left, right)
+}
+func (OpModValue) String(left Node, right Node) string {
+	return fmt.Sprintf("mod(%v,%v)", left, right)
+}
+func (OpOrValue) String(left Node, right Node) string {
+	return fmt.Sprintf("((int)%v|(int)%v)", left, right)
+}
+func (OpAndValue) String(left Node, right Node) string {
+	return fmt.Sprintf("((int)%v&(int)%v)", left, right)
 }

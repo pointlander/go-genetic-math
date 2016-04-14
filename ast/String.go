@@ -1,10 +1,9 @@
 package ast
 
-import "fmt"
 import "strconv"
 
 func (node *BinaryNode) String() string {
-	return fmt.Sprintf("(%v%v%v)", node.Left, node.Operator, node.Right)
+	return node.Operator.String(node.Left, node.Right)
 }
 
 func (node *LiteralNode) String() string {
