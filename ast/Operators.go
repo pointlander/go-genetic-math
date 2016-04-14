@@ -9,6 +9,7 @@ import "fmt"
 type BinaryOp interface {
 	Apply(left Node, right Node, context *engine.Context) float64
 	String(left Node, right Node) string
+	Optimize(left Node, right Node) Node
 }
 
 type OpAddValue struct{}
@@ -80,4 +81,45 @@ func (OpOrValue) String(left Node, right Node) string {
 }
 func (OpAndValue) String(left Node, right Node) string {
 	return fmt.Sprintf("((int)%v&(int)%v)", left, right)
+}
+
+func (operator OpAddValue) Optimize(left Node, right Node) Node {
+	if isConstantZero(left) {
+		return right
+	}
+
+	if isConstantZero(right) {
+		return left
+	}
+
+	return Binary(left, right, operator)
+}
+func (operator OpSubValue) Optimize(left Node, right Node) Node {
+	if isConstantZero(left) {
+		return right
+	}
+
+	if isConstantZero(right) {
+		return left
+	}
+
+	return Binary(left, right, operator)
+}
+func (operator OpDivValue) Optimize(left Node, right Node) Node {
+	return Binary(left, right, operator)
+}
+func (operator OpMulValue) Optimize(left Node, right Node) Node {
+	if isConstantZero(left) || isConstantZero(right) {
+		return Literal(0)
+	}
+	return Binary(left, right, operator)
+}
+func (operator OpModValue) Optimize(left Node, right Node) Node {
+	return Binary(left, right, operator)
+}
+func (operator OpOrValue) Optimize(left Node, right Node) Node {
+	return Binary(left, right, operator)
+}
+func (operator OpAndValue) Optimize(left Node, right Node) Node {
+	return Binary(left, right, operator)
 }

@@ -6,9 +6,9 @@ import (
 
 func isConstantZero(node Node) bool {
 	if !node.IsConstant() {
-        return false
-    }
-    
+		return false
+	}
+
 	value := node.Eval(engine.NewContext())
 	return value == 0
 }
@@ -52,29 +52,7 @@ func (node *BinaryNode) Optimize() Node {
 	left := node.Left.Optimize()
 	right := node.Right.Optimize()
 
-	//remove any + or - of constant 0
-	if node.Operator == OpAdd || node.Operator == OpSub {
-		if isConstantZero(left) {
-			return right
-		}
-
-		if isConstantZero(right) {
-			return left
-		}
-	}
-
-	//return literal 0 for any multiplication with or by 0
-	if node.Operator == OpMul {
-		if isConstantZero(left) {
-			return Literal(0)
-		}
-
-		if isConstantZero(right) {
-			return Literal(0)
-		}
-	}
-
-	return Binary(left, right, node.Operator)
+	return node.Operator.Optimize(left, right)
 }
 
 func (node *LiteralNode) Optimize() Node {

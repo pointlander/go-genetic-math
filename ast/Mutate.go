@@ -112,7 +112,7 @@ func (node *BinaryNode) Mutate() Node {
 	//mutate children
 	left := node.Left.Mutate()
 	right := node.Right.Mutate()
-	
+
 	operator := node.Operator
 	if hit(rate1) {
 		operator = randomOperator()
