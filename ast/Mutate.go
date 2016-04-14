@@ -14,13 +14,6 @@ func randomLetter() string {
 	return string(letterRunes[rand.Intn(len(letterRunes))])
 }
 
-var operators = []BinaryOp{
-	OpAdd,
-	OpSub,
-	OpMul,
-	OpDiv,
-}
-
 func randomOperator() BinaryOp {
 	return operators[rand.Intn(len(operators))]
 }
