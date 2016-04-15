@@ -5,7 +5,7 @@ import (
 )
 
 func isConstantZero(node Node) bool {
-	if !node.IsConstant() {
+	if !node.IsLiteral() {
 		return false
 	}
 
@@ -13,44 +13,27 @@ func isConstantZero(node Node) bool {
 	return value == 0
 }
 
-func (node *BinaryNode) IsConstant() bool {
-
-	left := node.Left
-	right := node.Right
-
-	//if this is a mul node and one of the operands are 0, then this is constant
-	if node.Operator == OpMul {
-		if isConstantZero(left) {
-			return true
-		}
-
-		if isConstantZero(right) {
-			return true
-		}
-	}
-
-	return node.Left.IsConstant() && node.Right.IsConstant()
-}
-
-func (node *LiteralNode) IsConstant() bool {
-	return true
-}
-
-func (node *VariableNode) IsConstant() bool {
+func (node *BinaryNode) IsLiteral() bool {
 	return false
 }
 
-func (node *BinaryNode) Optimize() Node {
+func (node *VariableNode) IsLiteral() bool {
+	return false
+}
 
-	//if the entre node is constant, evaluate and return literal with content
-	if node.IsConstant() {
+func (node *LiteralNode) IsLiteral() bool {
+	return true
+}
+
+func (node *BinaryNode) Optimize() Node {
+	left := node.Left.Optimize()
+	right := node.Right.Optimize()
+
+	if left.IsLiteral() && right.IsLiteral() {
 		context := engine.NewContext()
 		constant := node.Eval(context)
 		return Literal(constant)
 	}
-
-	left := node.Left.Optimize()
-	right := node.Right.Optimize()
 
 	return node.Operator.Optimize(left, right)
 }

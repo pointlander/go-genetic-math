@@ -7,7 +7,7 @@ type Node interface {
 	Eval(context *engine.Context) float64
 	String() string
 	Mutate() Node
-	IsConstant() bool
+	IsLiteral() bool
 	Optimize() Node
 }
 
