@@ -1,3 +1,8 @@
+This is my attempt at doing genetic programming in Go.
+The application can breed math formulas in order to solve problems based on given input and expected output.
+
+The code currently lacks genetic crossover between individuals, which may disqualify it from being true genetic programming.
+It is on the todo list for now.
 
 
 ```
