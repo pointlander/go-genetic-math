@@ -84,22 +84,22 @@ func (OpAndValue) String(left Node, right Node) string {
 }
 
 func (operator OpAddValue) Optimize(left Node, right Node) Node {
-	if isConstantZero(left) {
+	if isLiteralZero(left) {
 		return right
 	}
 
-	if isConstantZero(right) {
+	if isLiteralZero(right) {
 		return left
 	}
 
 	return Binary(left, right, operator)
 }
 func (operator OpSubValue) Optimize(left Node, right Node) Node {
-	if isConstantZero(left) {
+	if isLiteralZero(left) {
 		return right
 	}
 
-	if isConstantZero(right) {
+	if isLiteralZero(right) {
 		return left
 	}
 
@@ -109,7 +109,7 @@ func (operator OpDivValue) Optimize(left Node, right Node) Node {
 	return Binary(left, right, operator)
 }
 func (operator OpMulValue) Optimize(left Node, right Node) Node {
-	if isConstantZero(left) || isConstantZero(right) {
+	if isLiteralZero(left) || isLiteralZero(right) {
 		return Literal(0)
 	}
 	return Binary(left, right, operator)

@@ -4,6 +4,8 @@ type Context struct {
 	variables map[string]float64
 }
 
+var EmptyContext *Context = nil
+
 func NewContext() *Context {
 	return &Context{
 		variables: map[string]float64{},

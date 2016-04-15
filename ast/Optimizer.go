@@ -4,34 +4,30 @@ import (
 	"github.com/rogeralsing/go-genetic-math/engine"
 )
 
-func isConstantZero(node Node) bool {
-	if !node.IsLiteral() {
+func isLiteralZero(node Node) bool {
+	switch t := node.(type) {
+	default:
 		return false
+	case *LiteralNode:
+		return t.Value == 0
 	}
-
-	value := node.Eval(engine.NewContext())
-	return value == 0
 }
 
-func (node *BinaryNode) IsLiteral() bool {
-	return false
-}
-
-func (node *VariableNode) IsLiteral() bool {
-	return false
-}
-
-func (node *LiteralNode) IsLiteral() bool {
-	return true
+func isLiteral(node Node) bool {
+	switch node.(type) {
+	default:
+		return false
+	case *LiteralNode:
+		return true
+	}
 }
 
 func (node *BinaryNode) Optimize() Node {
 	left := node.Left.Optimize()
 	right := node.Right.Optimize()
 
-	if left.IsLiteral() && right.IsLiteral() {
-		context := engine.NewContext()
-		constant := node.Eval(context)
+	if isLiteral(left) && isLiteral(right) {
+		constant := node.Operator.Apply(left, right, engine.EmptyContext)
 		return Literal(constant)
 	}
 
