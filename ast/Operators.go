@@ -4,8 +4,6 @@ import "github.com/rogeralsing/go-genetic-math/engine"
 import "math"
 import "fmt"
 
-//TODO: maybe I should make this mess polymorphic
-
 type BinaryOp interface {
 	Apply(left Node, right Node, context *engine.Context) float64
 	String(left Node, right Node) string
@@ -84,10 +82,13 @@ func (OpAndValue) String(left Node, right Node) string {
 }
 
 func (operator OpAddValue) Optimize(left Node, right Node) Node {
+
+	//if left is 0, we can reduce this to only the right node
 	if isLiteralZero(left) {
 		return right
 	}
 
+	//if right is 0, we can reduce this to only the left node
 	if isLiteralZero(right) {
 		return left
 	}
@@ -95,10 +96,12 @@ func (operator OpAddValue) Optimize(left Node, right Node) Node {
 	return Binary(left, right, operator)
 }
 func (operator OpSubValue) Optimize(left Node, right Node) Node {
+	//if left is 0, we can reduce this to only the right node
 	if isLiteralZero(left) {
 		return right
 	}
 
+	//if right is 0, we can reduce this to only the left node
 	if isLiteralZero(right) {
 		return left
 	}
@@ -109,6 +112,8 @@ func (operator OpDivValue) Optimize(left Node, right Node) Node {
 	return Binary(left, right, operator)
 }
 func (operator OpMulValue) Optimize(left Node, right Node) Node {
+
+	//anything multiplied by 0 is 0, reduce to constant
 	if isLiteralZero(left) || isLiteralZero(right) {
 		return Literal(0)
 	}

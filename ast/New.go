@@ -2,19 +2,19 @@ package ast
 
 //Add adds the evaluated result of two nodes
 func Add(left Node, right Node) Node {
-	return &BinaryNode{Left: left, Right: right, Operator: OpAdd}
+	return Binary(left,right,OpAdd)
 }
 
 func Sub(left Node, right Node) Node {
-	return &BinaryNode{Left: left, Right: right, Operator: OpSub}
+	return Binary(left,right,OpSub)
 }
 
 func Div(left Node, right Node) Node {
-	return &BinaryNode{Left: left, Right: right, Operator: OpDiv}
+	return Binary(left,right,OpDiv)
 }
 
 func Mul(left Node, right Node) Node {
-	return &BinaryNode{Left: left, Right: right, Operator: OpMul}
+	return Binary(left,right,OpMul)
 }
 
 func Binary(left Node, right Node, operator BinaryOp) Node {

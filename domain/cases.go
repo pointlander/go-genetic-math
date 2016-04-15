@@ -126,11 +126,11 @@ func (cases CasesValue) Solve() ast.Node {
 
 		//did we find a solution? if so return it
 		if best.Fitness == 0 {
-			solution := best.Node.Optimize()
+			solution := best.Node.Reduce()
 			log.Printf("Solved %v", solution)
 			log.Printf("Generations %v", generaton)
 			elapsed := time.Since(start)
-			log.Printf("Time to find solution %s", elapsed)			
+			log.Printf("Time to find solution %s", elapsed)
 			return solution
 		}
 

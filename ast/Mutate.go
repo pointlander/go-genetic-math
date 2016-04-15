@@ -47,6 +47,8 @@ func randomSplit(node Node) Node {
 //VariableNode
 //BinaryNode
 //LiteralNode
+//
+//this is because we most likely want a formula based on variables, and not a lot of magic constants
 func randomNode() Node {
 	if hit(500) {
 		return randomLiteralNode()
@@ -96,7 +98,6 @@ func (node *LiteralNode) Mutate() Node {
 	}
 	if hit(rate1) {
 		//hard mutation to integer
-
 		return Literal(float64(int(node.Value)))
 	}
 

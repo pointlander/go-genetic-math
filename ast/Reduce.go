@@ -22,9 +22,9 @@ func isLiteral(node Node) bool {
 	}
 }
 
-func (node *BinaryNode) Optimize() Node {
-	left := node.Left.Optimize()
-	right := node.Right.Optimize()
+func (node *BinaryNode) Reduce() Node {
+	left := node.Left.Reduce()
+	right := node.Right.Reduce()
 
 	if isLiteral(left) && isLiteral(right) {
 		constant := node.Operator.Apply(left, right, engine.EmptyContext)
@@ -34,10 +34,10 @@ func (node *BinaryNode) Optimize() Node {
 	return node.Operator.Optimize(left, right)
 }
 
-func (node *LiteralNode) Optimize() Node {
+func (node *LiteralNode) Reduce() Node {
 	return node
 }
 
-func (node *VariableNode) Optimize() Node {
+func (node *VariableNode) Reduce() Node {
 	return node
 }

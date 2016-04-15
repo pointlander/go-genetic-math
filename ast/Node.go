@@ -7,7 +7,7 @@ type Node interface {
 	Eval(context *engine.Context) float64
 	String() string
 	Mutate() Node
-	Optimize() Node
+	Reduce() Node
 }
 
 //LiteralNode represents a literal value, e.g. 123.456
