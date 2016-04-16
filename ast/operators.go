@@ -4,7 +4,7 @@ import "github.com/rogeralsing/go-genetic-math/engine"
 import "math"
 import "fmt"
 
-type BinaryOp interface {
+type binaryOperator interface {
 	Apply(left Node, right Node, context *engine.Context) float64
 	String(left Node, right Node) string
 	Reduce(left Node, right Node) Node
@@ -26,7 +26,7 @@ var OpMod = OpModValue{}
 var OpOr = OpOrValue{}
 var OpAnd = OpAndValue{}
 
-var operators = []BinaryOp{
+var operators = [...]binaryOperator{
 	OpAdd,
 	OpSub,
 	OpMul,

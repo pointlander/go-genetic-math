@@ -17,7 +17,7 @@ func Mul(left Node, right Node) Node {
 	return Binary(left, right, OpMul)
 }
 
-func Binary(left Node, right Node, operator BinaryOp) Node {
+func Binary(left Node, right Node, operator binaryOperator) Node {
 	return &BinaryNode{left: left, right: right, operator: operator}
 }
 

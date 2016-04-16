@@ -23,33 +23,33 @@ func Input(variable string, value float64) InputValue {
 }
 
 type CaseValue struct {
-	Inputs []InputValue
-	Result float64
+	inputs []InputValue
+	result float64
 }
 
 func Case(result float64, inputs ...InputValue) CaseValue {
 	return CaseValue{
-		Result: result,
-		Inputs: inputs,
+		result: result,
+		inputs: inputs,
 	}
 }
 
 type CasesValue struct {
-	Cases []CaseValue
+	cases []CaseValue
 }
 
 func DefineProblem(cases ...CaseValue) CasesValue {
-	return CasesValue{Cases: cases}
+	return CasesValue{cases: cases}
 }
 
 func (cases CasesValue) String() string {
 	var buffer bytes.Buffer
-	for x, c := range cases.Cases {
+	for x, c := range cases.cases {
 		buffer.WriteString(fmt.Sprintf("Case %v\n", x))
-		for _, i := range c.Inputs {
+		for _, i := range c.inputs {
 			buffer.WriteString(fmt.Sprintf("\tVar %s = %v \n", i.Variable, i.Value))
 		}
-		buffer.WriteString(fmt.Sprintf("\tExpected %v \n", c.Result))
+		buffer.WriteString(fmt.Sprintf("\tExpected %v \n", c.result))
 	}
 	return fmt.Sprint(buffer.String())
 }
@@ -57,12 +57,12 @@ func (cases CasesValue) String() string {
 func (cases CasesValue) Fitness(node ast.Node) float64 {
 	context := engine.NewContext()
 	total := 0.0
-	for _, c := range cases.Cases {
-		for _, i := range c.Inputs {
+	for _, c := range cases.cases {
+		for _, i := range c.inputs {
 			context.SetVariable(i.Variable, i.Value)
 		}
 		res := node.Eval(context)
-		diff := math.Abs(c.Result - res)
+		diff := math.Abs(c.result - res)
 		total += diff
 	}
 
@@ -84,7 +84,20 @@ func (cases CasesValue) Solve() ast.Node {
 
 	start := time.Now()
 	log.Println(cases)
+	results := make(chan ast.Node, 1)
 
+	for i := 0; i < 5; i++ {
+		go solve(cases, results)	
+	}
+
+	solution := <- results
+	log.Printf("Solved %v", solution)
+	elapsed := time.Since(start)
+	log.Printf("Time to find solution %s", elapsed)
+	return solution
+}
+
+func solve(cases CasesValue, results chan<- ast.Node){
 	populationSize := 20
 	generaton := 0
 	optimizations := 1000
@@ -104,7 +117,7 @@ func (cases CasesValue) Solve() ast.Node {
 			population = append(population, child)
 		}
 
-		//create 10 children by genetic crossover
+		//create children by genetic crossover
 		for i := 0; i < 5; i++ {
 			mother := population[rand.Intn(len(population))]
 			father := population[rand.Intn(len(population))]
@@ -132,11 +145,8 @@ func (cases CasesValue) Solve() ast.Node {
 		//did we find a solution? if so return it
 		if best.Fitness == 0 && optimizations == 0 {
 			solution := best.Node.Reduce()
-			log.Printf("Solved %v", solution)
-			log.Printf("Generations %v", generaton)
-			elapsed := time.Since(start)
-			log.Printf("Time to find solution %s", elapsed)
-			return solution
+			results <- solution
+			return
 		}
 
 		population = make([]ast.Node, populationSize)

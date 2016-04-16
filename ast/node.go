@@ -21,7 +21,7 @@ type LiteralNode struct {
 type BinaryNode struct {
 	left     Node
 	right    Node
-	operator BinaryOp
+	operator binaryOperator
 }
 
 //VariableNode represents a variable, e.g. X
