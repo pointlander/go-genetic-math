@@ -117,7 +117,7 @@ func (cases CasesValue) Solve() ast.Node {
 		}
 
 		//create 10 children by genetic crossover
-		for i := 0; i < 2; i++ {
+		for i := 0; i < 5; i++ {
 			mother := population[rand.Intn(len(population))]
 			father := population[rand.Intn(len(population))]
 			child := mother.Combine(father)
@@ -128,9 +128,9 @@ func (cases CasesValue) Solve() ast.Node {
 		sorted := calculateFitness(population, cases)
 		best := sorted[0]
 
-		if generaton%1000 == 0 {
-			log.Printf("Generation %v \t %v", generaton,best.Node)
-		}
+		// if generaton%1000 == 0 {
+		// 	log.Printf("Generation %v \t %v", generaton,best.Node)
+		// }
 
 		//if we got a better fitness now, print it
 		if best.Fitness < bestFitness {
