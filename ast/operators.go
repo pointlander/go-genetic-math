@@ -32,8 +32,8 @@ var operators = []BinaryOp{
 	OpMul,
 	OpDiv,
 	OpMod,
-	OpOr,
-	OpAnd,
+//	OpOr,
+//	OpAnd,
 	// OpXor,
 }
 
@@ -47,7 +47,7 @@ func (OpDivValue) Apply(left Node, right Node, context *engine.Context) float64 
 	leftValue := left.Eval(context)
 	rightValue := right.Eval(context)
 	if rightValue == 0 {
-		return math.MaxFloat64
+		return 0
 	}
 	return leftValue / rightValue
 }
@@ -57,8 +57,8 @@ func (OpMulValue) Apply(left Node, right Node, context *engine.Context) float64 
 func (OpModValue) Apply(left Node, right Node, context *engine.Context) float64 {
 	leftValue := left.Eval(context)
 	rightValue := right.Eval(context)
-	if rightValue == 0 {
-		return math.MaxFloat64
+	if rightValue <= 0 {
+		return 0
 	}
 	return math.Mod(leftValue, rightValue)
 }

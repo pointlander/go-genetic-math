@@ -128,9 +128,9 @@ func (cases CasesValue) Solve() ast.Node {
 		sorted := calculateFitness(population, cases)
 		best := sorted[0]
 
-		// if generaton%1000 == 0 {
-		// 	log.Printf("Generation %v \t %v", generaton,best.Node)
-		// }
+		if generaton%1000 == 0 {
+			log.Printf("Generation %v \t %v  %v", generaton,best.Fitness,best.Node)
+		}
 
 		//if we got a better fitness now, print it
 		if best.Fitness < bestFitness {
