@@ -32,8 +32,8 @@ var operators = []BinaryOp{
 	OpMul,
 	OpDiv,
 	OpMod,
-//	OpOr,
-//	OpAnd,
+	OpOr,
+	OpAnd,
 	// OpXor,
 }
 

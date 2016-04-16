@@ -9,6 +9,7 @@ type Node interface {
 	Mutate() Node
 	Reduce() Node
 	Combine(Node) Node
+	Weight() int
 }
 
 //LiteralNode represents a literal value, e.g. 123.456

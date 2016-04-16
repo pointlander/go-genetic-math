@@ -74,11 +74,19 @@ type NodeFitness struct {
 	Fitness float64
 }
 
-type byFitness []NodeFitness
+type byFitnessAndWeight []NodeFitness
 
-func (a byFitness) Len() int           { return len(a) }
-func (a byFitness) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a byFitness) Less(i, j int) bool { return a[i].Fitness < a[j].Fitness }
+func (a byFitnessAndWeight) Len() int      { return len(a) }
+func (a byFitnessAndWeight) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a byFitnessAndWeight) Less(i, j int) bool {
+	if a[i].Fitness < a[j].Fitness {
+		return true
+	}
+	if a[i].Fitness == a[j].Fitness {
+		return a[i].Node.Weight() < a[j].Node.Weight()
+	}
+	return false
+}
 
 func calculateFitness(nodes []ast.Node, cases CasesValue) []NodeFitness {
 	var fitnessNodes = make([]NodeFitness, len(nodes))
@@ -87,7 +95,7 @@ func calculateFitness(nodes []ast.Node, cases CasesValue) []NodeFitness {
 		fitnessNodes[i].Node = node
 		fitnessNodes[i].Fitness = cases.Fitness(node)
 	}
-	sort.Sort(byFitness(fitnessNodes))
+	sort.Sort(byFitnessAndWeight(fitnessNodes))
 	return fitnessNodes
 }
 
@@ -129,7 +137,7 @@ func (cases CasesValue) Solve() ast.Node {
 		best := sorted[0]
 
 		if generaton%1000 == 0 {
-			log.Printf("Generation %v \t %v  %v", generaton,best.Fitness,best.Node)
+			log.Printf("Generation %v \t %v  %v", generaton, best.Fitness, best.Node)
 		}
 
 		//if we got a better fitness now, print it
