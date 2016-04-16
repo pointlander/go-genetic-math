@@ -9,7 +9,7 @@ func isLiteralZero(node Node) bool {
 	default:
 		return false
 	case *LiteralNode:
-		return t.Value == 0
+		return t.value == 0
 	}
 }
 
@@ -23,15 +23,15 @@ func isLiteral(node Node) bool {
 }
 
 func (node *BinaryNode) Reduce() Node {
-	left := node.Left.Reduce()
-	right := node.Right.Reduce()
+	left := node.left.Reduce()
+	right := node.right.Reduce()
 
 	if isLiteral(left) && isLiteral(right) {
-		constant := node.Operator.Apply(left, right, engine.EmptyContext)
+		constant := node.operator.Apply(left, right, engine.EmptyContext)
 		return Literal(constant)
 	}
 
-	return node.Operator.Reduce(left, right)
+	return node.operator.Reduce(left, right)
 }
 
 func (node *LiteralNode) Reduce() Node {

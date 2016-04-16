@@ -14,17 +14,17 @@ type Node interface {
 
 //LiteralNode represents a literal value, e.g. 123.456
 type LiteralNode struct {
-	Value float64
+	value float64
 }
 
 //BinaryNode represents a binary operation, e.g. a + b
 type BinaryNode struct {
-	Left     Node
-	Right    Node
-	Operator BinaryOp
+	left     Node
+	right    Node
+	operator BinaryOp
 }
 
 //VariableNode represents a variable, e.g. X
 type VariableNode struct {
-	Variable string
+	variable string
 }
