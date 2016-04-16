@@ -104,10 +104,9 @@ func (cases CasesValue) Solve() ast.Node {
 	start := time.Now()
 	log.Println(cases)
 
-	//untill I get genetic crossover, there is not much benefit of having a larger population size
-
 	populationSize := 20
 	generaton := 0
+	optimizations := 1000
 	var population = make([]ast.Node, populationSize)
 
 	//initialize with dummy data
@@ -143,11 +142,13 @@ func (cases CasesValue) Solve() ast.Node {
 		//if we got a better fitness now, print it
 		if best.Fitness < bestFitness {
 			bestFitness = best.Fitness
-			log.Printf("%v\t%v", best.Fitness, best.Node)
 		}
 
-		//did we find a solution? if so return it
 		if best.Fitness == 0 {
+			optimizations--
+		}
+		//did we find a solution? if so return it
+		if best.Fitness == 0 && optimizations == 0 {
 			solution := best.Node.Reduce()
 			log.Printf("Solved %v", solution)
 			log.Printf("Generations %v", generaton)
