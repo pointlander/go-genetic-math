@@ -31,7 +31,7 @@ func (node *BinaryNode) Reduce() Node {
 		return Literal(constant)
 	}
 
-	return node.Operator.Optimize(left, right)
+	return node.Operator.Reduce(left, right)
 }
 
 func (node *LiteralNode) Reduce() Node {

@@ -7,7 +7,7 @@ import "fmt"
 type BinaryOp interface {
 	Apply(left Node, right Node, context *engine.Context) float64
 	String(left Node, right Node) string
-	Optimize(left Node, right Node) Node
+	Reduce(left Node, right Node) Node
 }
 
 type OpAddValue struct{}
@@ -81,7 +81,7 @@ func (OpAndValue) String(left Node, right Node) string {
 	return fmt.Sprintf("((int)%v&(int)%v)", left, right)
 }
 
-func (operator OpAddValue) Optimize(left Node, right Node) Node {
+func (operator OpAddValue) Reduce(left Node, right Node) Node {
 
 	//if left is 0, we can reduce this to only the right node
 	if isLiteralZero(left) {
@@ -95,7 +95,7 @@ func (operator OpAddValue) Optimize(left Node, right Node) Node {
 
 	return Binary(left, right, operator)
 }
-func (operator OpSubValue) Optimize(left Node, right Node) Node {
+func (operator OpSubValue) Reduce(left Node, right Node) Node {
 	//if left is 0, we can reduce this to only the right node
 	if isLiteralZero(left) {
 		return right
@@ -108,10 +108,10 @@ func (operator OpSubValue) Optimize(left Node, right Node) Node {
 
 	return Binary(left, right, operator)
 }
-func (operator OpDivValue) Optimize(left Node, right Node) Node {
+func (operator OpDivValue) Reduce(left Node, right Node) Node {
 	return Binary(left, right, operator)
 }
-func (operator OpMulValue) Optimize(left Node, right Node) Node {
+func (operator OpMulValue) Reduce(left Node, right Node) Node {
 
 	//anything multiplied by 0 is 0, reduce to constant
 	if isLiteralZero(left) || isLiteralZero(right) {
@@ -119,12 +119,12 @@ func (operator OpMulValue) Optimize(left Node, right Node) Node {
 	}
 	return Binary(left, right, operator)
 }
-func (operator OpModValue) Optimize(left Node, right Node) Node {
+func (operator OpModValue) Reduce(left Node, right Node) Node {
 	return Binary(left, right, operator)
 }
-func (operator OpOrValue) Optimize(left Node, right Node) Node {
+func (operator OpOrValue) Reduce(left Node, right Node) Node {
 	return Binary(left, right, operator)
 }
-func (operator OpAndValue) Optimize(left Node, right Node) Node {
+func (operator OpAndValue) Reduce(left Node, right Node) Node {
 	return Binary(left, right, operator)
 }
