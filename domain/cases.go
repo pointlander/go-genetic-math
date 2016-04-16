@@ -85,6 +85,7 @@ func (cases CasesValue) Solve() ast.Node {
 	start := time.Now()
 	log.Println(cases)
 	results := make(chan ast.Node, 1)
+	defer close(results)
 
 	for i := 0; i < 5; i++ {
 		go solve(cases, results)	
