@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"math/rand"
 	"sort"
 	"time"
 
@@ -97,7 +98,7 @@ func (cases CasesValue) Solve() ast.Node {
 
 	//untill I get genetic crossover, there is not much benefit of having a larger population size
 
-	populationSize := 1
+	populationSize := 20
 	generaton := 0
 	var population = make([]ast.Node, populationSize)
 
@@ -108,15 +109,28 @@ func (cases CasesValue) Solve() ast.Node {
 
 	bestFitness := math.MaxFloat64
 	for {
+
 		//create a child per parent
 		for i := 0; i < populationSize; i++ {
 			child := population[i].Mutate()
 			population = append(population, child)
 		}
 
+		//create 10 children by genetic crossover
+		for i := 0; i < 2; i++ {
+			mother := population[rand.Intn(len(population))]
+			father := population[rand.Intn(len(population))]
+			child := mother.Combine(father)
+			population = append(population, child)
+		}
+
 		//sort all organisms by fitness
 		sorted := calculateFitness(population, cases)
 		best := sorted[0]
+
+		if generaton%1000 == 0 {
+			log.Printf("Generation %v \t %v", generaton,best.Node)
+		}
 
 		//if we got a better fitness now, print it
 		if best.Fitness < bestFitness {

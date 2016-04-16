@@ -4,10 +4,11 @@ import "github.com/rogeralsing/go-genetic-math/engine"
 
 //Node represents an abstract AST node and the behaviors available on it
 type Node interface {
-	Eval(context *engine.Context) float64
+	Eval(*engine.Context) float64
 	String() string
 	Mutate() Node
 	Reduce() Node
+	Combine(Node) Node
 }
 
 //LiteralNode represents a literal value, e.g. 123.456

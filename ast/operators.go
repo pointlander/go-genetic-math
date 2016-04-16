@@ -44,13 +44,23 @@ func (OpSubValue) Apply(left Node, right Node, context *engine.Context) float64 
 	return left.Eval(context) - right.Eval(context)
 }
 func (OpDivValue) Apply(left Node, right Node, context *engine.Context) float64 {
-	return left.Eval(context) / right.Eval(context)
+	leftValue := left.Eval(context)
+	rightValue := right.Eval(context)
+	if rightValue == 0 {
+		return math.MaxFloat64
+	}
+	return leftValue / rightValue
 }
 func (OpMulValue) Apply(left Node, right Node, context *engine.Context) float64 {
 	return left.Eval(context) * right.Eval(context)
 }
 func (OpModValue) Apply(left Node, right Node, context *engine.Context) float64 {
-	return math.Mod(left.Eval(context), right.Eval(context))
+	leftValue := left.Eval(context)
+	rightValue := right.Eval(context)
+	if rightValue == 0 {
+		return math.MaxFloat64
+	}
+	return math.Mod(leftValue, rightValue)
 }
 func (OpOrValue) Apply(left Node, right Node, context *engine.Context) float64 {
 	return float64(int(left.Eval(context)) | int(right.Eval(context)))
