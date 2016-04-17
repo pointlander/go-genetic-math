@@ -89,7 +89,7 @@ func (cases CasesValue) Solve() ast.Node {
 	defer close(results)
 	defer close(cancel)
 
-	for i := 0; i < 4; i++ {
+	for i := 0; i < 10 ; i++ {
 		go solve(cases, results, cancel)
 	}
 
@@ -128,7 +128,7 @@ func solve(cases CasesValue, results chan<- ast.Node, cancel <-chan struct{}) {
 		}
 
 		//create children by genetic crossover
-		for i := 0; i < 1; i++ {
+		for i := 0; i < populationSize; i++ {
 			mother := population[rand.Intn(len(population))]
 			father := population[rand.Intn(len(population))]
 			child := mother.Combine(father)
