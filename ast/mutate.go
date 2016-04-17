@@ -36,10 +36,10 @@ func randomVariableNode() Node {
 
 func randomSplit(node Node) Node {
 	if hit(2) {
-		split := Binary(randomLiteralNode(), node, randomOperator())
+		split := Binary(randomNode(), node, randomOperator())
 		return split
 	}
-	split := Binary(node, randomLiteralNode(), randomOperator())
+	split := Binary(node, randomNode(), randomOperator())
 	return split
 }
 
@@ -50,10 +50,10 @@ func randomSplit(node Node) Node {
 //
 //this is because we most likely want a formula based on variables, and not a lot of magic constants
 func randomNode() Node {
-	if hit(500) {
+	if hit(50000) {
 		return randomLiteralNode()
 	}
-	if hit(20) {
+	if hit(10) {
 		return randomBinaryNode()
 	}
 	return randomVariableNode()

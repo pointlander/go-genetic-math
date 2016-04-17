@@ -8,38 +8,38 @@ func (node *BinaryNode) Combine(other Node) Node {
 		return Binary(node.left, node.right.Combine(other), node.operator)
 	}
 
-	return other.RandomPart()
+	return other.Extract()
 }
 
 func (node *LiteralNode) Combine(other Node) Node {
 	if hit(2) {
-		return other.RandomPart()
+		return other.Extract()
 	}
 	return node
 }
 
 func (node *VariableNode) Combine(other Node) Node {
 	if hit(2) {
-		return other.RandomPart()
+		return other.Extract()
 	}
 	return node
 }
 
-func (node *BinaryNode) RandomPart() Node {
+func (node *BinaryNode) Extract() Node {
 	if hit(3) {
-		return node.left.RandomPart()
+		return node.left.Extract()
 	}
 	if hit(3) {
-		return node.right.RandomPart()
+		return node.right.Extract()
 	}
 
 	return node
 }
 
-func (node *LiteralNode) RandomPart() Node {
+func (node *LiteralNode) Extract() Node {
 	return node
 }
 
-func (node *VariableNode) RandomPart() Node {
+func (node *VariableNode) Extract() Node {
 	return node
 }

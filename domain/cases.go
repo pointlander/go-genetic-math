@@ -134,7 +134,7 @@ func solve(cases CasesValue, results chan<- ast.Node, cancel <-chan struct{}) {
 			child := mother.Combine(father)
 			population = append(population, child)
 		}
-
+		
 		//sort all organisms by fitness
 		sorted := calculateFitness(population, cases)
 		best := sorted[0]
