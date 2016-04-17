@@ -10,6 +10,7 @@ type Node interface {
 	Reduce() Node
 	Combine(Node) Node
 	Weight() int
+	RandomPart() Node
 }
 
 //LiteralNode represents a literal value, e.g. 123.456
