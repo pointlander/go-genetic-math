@@ -128,7 +128,7 @@ func solve(cases CasesValue, results chan<- ast.Node, cancel <-chan struct{}) {
 		}
 
 		//create children by genetic crossover
-		for i := 0; i < 5; i++ {
+		for i := 0; i < populationSize; i++ {
 			mother := population[rand.Intn(len(population))]
 			father := population[rand.Intn(len(population))]
 			child := mother.Combine(father)

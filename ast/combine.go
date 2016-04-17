@@ -2,10 +2,10 @@ package ast
 
 func (node *BinaryNode) Combine(other Node) Node {
 	if hit(4) {
-		return node.left.Combine(other)
+		return Binary(node.left.Combine(other),node.right,node.operator)
 	}
 	if hit(4) {
-		return node.right.Combine(other)
+		return Binary(node.left,node.right.Combine(other),node.operator)
 	}
 	if hit(4) {
 		return other
