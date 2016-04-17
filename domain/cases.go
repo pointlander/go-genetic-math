@@ -85,20 +85,22 @@ func (cases CasesValue) Solve() ast.Node {
 	start := time.Now()
 	log.Println(cases)
 	results := make(chan ast.Node, 1)
+	cancel := make(chan struct{}, 1)
 	defer close(results)
+	defer close(cancel)
 
 	for i := 0; i < 5; i++ {
-		go solve(cases, results)	
+		go solve(cases, results, cancel)
 	}
 
-	solution := <- results
+	solution := <-results
 	log.Printf("Solved %v", solution)
 	elapsed := time.Since(start)
 	log.Printf("Time to find solution %s", elapsed)
 	return solution
 }
 
-func solve(cases CasesValue, results chan<- ast.Node){
+func solve(cases CasesValue, results chan<- ast.Node, cancel <-chan struct{}) {
 	populationSize := 20
 	generaton := 0
 	optimizations := 1000
@@ -111,6 +113,13 @@ func solve(cases CasesValue, results chan<- ast.Node){
 
 	bestFitness := math.MaxFloat64
 	for {
+
+		select {
+		case <-cancel:
+			log.Println("Quitting")
+			return
+		default:			
+		}
 
 		//create a child per parent
 		for i := 0; i < populationSize; i++ {
