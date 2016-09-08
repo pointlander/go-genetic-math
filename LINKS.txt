@@ -1,0 +1,4 @@
+Symbolic regression:
+http://www.nutonian.com/index.php
+http://www.nutonian.com/research/evolutionary-computation/improving-genetic-programming-based-symbolic-regression-using-deterministic-machine-learning/
+http://science.sciencemag.org/content/324/5923/81.abstract
